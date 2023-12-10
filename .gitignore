@@ -1,3 +1,4 @@
 chromedriver
 .idea
 venv
+.env
