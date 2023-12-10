@@ -1,7 +1,6 @@
 import random
 
 from selenium import webdriver
-from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -13,14 +12,19 @@ from genName import generate_random_name, generate_random_email
 
 import time
 
-URL = "https://elka-tech.fut.ru/?utm_campaign=friends&utm_content=almtara550@gmail.com"
+from dotenv import load_dotenv
+import os
 
-# Замените путь к драйверу на ваш
-driver_path = "/Users/aatara57/PycharmProjects/regReferGazpromMeetup/chromedriver"
+load_dotenv()
+
+# In file .env you should input your URL, DRIVER_PATH
+URL = os.getenv("URL")
+driver_path = os.getenv("DRIVER_PATH")
+
 
 # Init web driver
 chrome_options = webdriver.ChromeOptions()
-# chrome_options.add_argument("--headless")  # Опционально: чтобы браузер не отображался на экране
+# chrome_options.add_argument("--headless")  # Optional parametr
 chrome_options.add_argument("--disable-gpu")
 chrome_options.add_argument("--window-size=1920x1080")
 
@@ -55,10 +59,10 @@ try:
         EC.presence_of_element_located((By.NAME, "tildaspec-phone-part[]"))
     )
 
-    # Заполняем поле ввода маской телефона
-    phone_input.send_keys("9".join([str(random.randint(0,9 )) for _ in range(8)]))  # Замените на реальный телефон
+    # Generation phone number
+    phone_input.send_keys("9".join([str(random.randint(0, 9)) for _ in range(8)]))
 
-    # VUZ
+    # University
     vuz_input = WebDriverWait(driver, 10).until(
         EC.presence_of_element_located((By.NAME, "vuz"))
     )
@@ -77,7 +81,6 @@ try:
     ]
 
     vuz_input.send_keys(russian_universities[random.randint(0, 10)])
-
 
     course_dropdown = WebDriverWait(driver, 10).until(
         EC.presence_of_element_located((By.ID, "sb-1699977280690"))
@@ -110,8 +113,6 @@ try:
     # actions.move_to_element(register_button).click().perform()
 
     time.sleep(30)
-
-
 
 finally:
     # Закрытие браузера
